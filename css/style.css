@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: arial, sans-serif;
+    background-color: rgb(129, 159, 159);
+}
+
+h3{
+    text-align: center;
+}
+
+.keyboard {
+    padding: 5px;
+    background-color: rgb(0, 0, 0);
+}
+
+.keyboard .key {
+    stroke: #000000;
+    stroke-width: 1.065px;
+}
+
+.keyboard .key:hover {
+    fill: yellow;
+}
+
+.keyboard .key.active {
+    fill: blue;
+}
+
+.keyboard .white {
+    fill: #ffffff;
+}
+
+.keyboard .black {
+    fill: #000000;
+}
