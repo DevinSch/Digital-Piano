@@ -3,13 +3,22 @@
 }
 
 body {
-    min-height: 100vh;
+    min-height: 100%;
     font-family: arial, sans-serif;
     background-color: rgb(129, 159, 159);
 }
 
-h3{
+h1 {
     text-align: center;
+    font-size: 50px;
+}
+
+h2 {
+    text-align: center;
+}
+
+h3 {
+    font-size: 30px;
 }
 
 .keyboard {
@@ -36,4 +45,118 @@ h3{
 
 .keyboard .black {
     fill: #000000;
+}
+
+.scale {
+    display: none;
+}
+
+/* Radio button styles based on code from: https://markheath.net/post/customize-radio-button-css */
+.radio-toolbar {
+    margin: 10px;
+}
+
+.radio-toolbar input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.radio-toolbar label {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 10px 20px;
+    font-family: sans-serif, Arial;
+    font-size: 16px;
+    border: 2px solid #444;
+    border-radius: 4px;
+}
+
+
+.radio-toolbar label:hover {
+    background-color: #dfd;
+}
+
+.radio-toolbar input[type="radio"]:focus+label {
+    border: 2px dashed #444;
+}
+
+.radio-toolbar input[type="radio"]:checked+label {
+    background-color: rgb(25, 137, 94);
+    border-color: rgb(255, 255, 255);
+    color: #ffffff;
+}
+
+.notes-grid {
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 80%;
+    padding: 60px;
+    column-gap: 30px;
+    font-size: 22px;
+}
+
+.playing {
+    font-size: 60px;
+    text-align: center;
+}
+
+footer {
+    position: fixed;
+    background-color: #000000;
+    color: #ddd;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+footer p {
+    padding-left: 30px;
+}
+
+/******* More info hover ******/
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 170px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content a {
+    display: block;
+    color: black;
+    padding: 5px 20px 5px 5px;
+}
+
+.dropdown-content a:hover {
+    background-color: #b2b2b2;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.material-symbols-outlined.more-info {
+    font-size: 40px;
+    vertical-align: bottom;
+}
+
+.material-symbols-outlined.more-info:hover {
+    color: #ffcf01;
+}
+
+.dropdown.more-info {
+    display: inline-block;
+}
+
+.dropdown-content.more-info {
+    border: 3px solid #f1f1f1;
+    padding: 5px;
+}
+
+.inline {
+    display: inline-block;
 }

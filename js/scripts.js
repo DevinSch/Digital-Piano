@@ -113,6 +113,7 @@ var chord_1 = 0;
 var chord_2 = 0;
 var chord_3 = 0;
 var mouse_down = false;
+var key_held = false;
 
 $(document).on("mousedown", function () {
     mouse_down = true;
@@ -120,46 +121,103 @@ $(document).on("mousedown", function () {
 $(document).on("mouseup", function () {
     mouse_down = false;
 })
+var display_note;
 
 function playNote(key, input, type) {
-    console.log(key);
+    //console.log(key);
+    display_note = input.split('#')[1];
     if (type == "mouse") {
+        $("#playing").text(display_note);
         if (mouse_down == true) {
+            // $("#playing").text(display_note);
             $(input).addClass("active");
             if (key.currentTime != 0) {
                 key.currentTime = 0;
-                key.play();
             }
             key.play();
-            $(this).on("mouseup", function () {
-                $(input).removeClass("active");
-            });
             $(this).on("mouseleave", function () {
                 $(input).removeClass("active");
+                //console.log("Mouse-left");
             });
         }
     } else if (type == "single-mouse") {
+        $("#playing").text(display_note);
         $(input).addClass("active");
         if (key.currentTime != 0) {
             key.currentTime = 0;
-            key.play();
         }
         key.play();
         $(this).on("mouseup", function () {
             $(input).removeClass("active");
         });
+        $(this).on("mouseleave", function () {
+            $(input).removeClass("active");
+            //console.log("Mouse-left");
+        });
     } else if (type == "keypress") {
+        // console.log("keypress");
         $(input).addClass("active");
         if (key.currentTime != 0) {
             key.currentTime = 0;
-            key.play();
         }
         key.play();
+        $(input).addClass("active");
+
         $(this).on("keyup", function () {
             $(input).removeClass("active");
         });
     }
 }
+
+// code by Sygmoral from: https://stackoverflow.com/questions/1402698/binding-arrow-keys-in-js-jquery
+// I couldn't seem to make the arrow keys work any other way
+document.onkeydown = function (e) {
+    switch (e.which) {
+        case 37: // left
+            scale--;
+            if ($("#scale-1").is(":checked")) {
+                $("#scale-7").prop("checked", true);
+                scale = 7;
+            } else if ($("#scale-2").is(":checked")) {
+                $("#scale-1").prop("checked", true);
+            } else if ($("#scale-3").is(":checked")) {
+                $("#scale-2").prop("checked", true);
+            } else if ($("#scale-4").is(":checked")) {
+                $("#scale-3").prop("checked", true);
+            } else if ($("#scale-5").is(":checked")) {
+                $("#scale-4").prop("checked", true);
+            } else if ($("#scale-6").is(":checked")) {
+                $("#scale-5").prop("checked", true);
+            } else if ($("#scale-7").is(":checked")) {
+                $("#scale-6").prop("checked", true);
+            }
+            console.log("left");
+            break;
+
+        case 39: // right
+            scale++;
+            if ($("#scale-1").is(":checked")) {
+                $("#scale-2").prop("checked", true);
+            } else if ($("#scale-2").is(":checked")) {
+                $("#scale-3").prop("checked", true);
+            } else if ($("#scale-3").is(":checked")) {
+                $("#scale-4").prop("checked", true);
+            } else if ($("#scale-4").is(":checked")) {
+                $("#scale-5").prop("checked", true);
+            } else if ($("#scale-5").is(":checked")) {
+                $("#scale-6").prop("checked", true);
+            } else if ($("#scale-6").is(":checked")) {
+                $("#scale-7").prop("checked", true);
+            } else if ($("#scale-7").is(":checked")) {
+                $("#scale-1").prop("checked", true);
+                scale = 1;
+            }
+            console.log("right");
+            break;
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+};
 
 $("#A0").on("mouseover", function () { playNote(a0_sound, "#A0", "mouse"); });
 $("#A0-1").on("mouseover", function () { playNote(a0_1_sound, "#A0-1", "mouse"); });
@@ -363,9 +421,18 @@ $("#C8").on("mousedown", function () { playNote(c8_sound, "#C8", "single-mouse")
 var sound_1;
 var sound_2;
 var sound_3;
-
+var ending;
 $(document).on("keypress", function (e) {
-    console.log(e.key);
+    //console.log(e.key);
+    if (scale == 1) {
+        ending = "st";
+    } else if (scale == 2) {
+        ending = "nd";
+    } else if (scale == 3) {
+        ending = "rd";
+    } else if (scale > 3) {
+        ending = "th";
+    }
     if (e.key == "A") { // A:Maj
         chord_1 = "#A" + scale;
         chord_2 = "#C" + scale + "-1";
@@ -373,6 +440,7 @@ $(document).on("keypress", function (e) {
         sound_1 = A_note[scale - 1];
         sound_2 = C_sharp[scale - 1];
         sound_3 = E_note[scale - 1];
+        $("#playing").html("A Major " + scale + ending + "<br> A - C sharp - E");
         play_notes();
     } else if (e.key == "a") { // A:Min
         chord_1 = "#A" + scale;
@@ -381,6 +449,7 @@ $(document).on("keypress", function (e) {
         sound_1 = A_note[scale - 1];
         sound_2 = C_note[scale - 1];
         sound_3 = E_note[scale - 1];
+        $("#playing").html("A minor " + scale + ending + "<br> A - C - E");
         play_notes();
     } else if (e.key == "C") { // C:Maj
         chord_1 = "#C" + scale;
@@ -389,6 +458,7 @@ $(document).on("keypress", function (e) {
         sound_1 = C_note[scale - 1];
         sound_2 = E_note[scale - 1];
         sound_3 = G_note[scale - 1];
+        $("#playing").html("C Major " + scale + ending + "<br> A - E - G");
         play_notes();
     } else if (e.key == "c") { // C:Min
         chord_1 = "#C" + scale;
@@ -397,6 +467,7 @@ $(document).on("keypress", function (e) {
         sound_1 = C_note[scale - 1];
         sound_2 = C_sharp[scale - 1];
         sound_3 = G_note[scale - 1];
+        $("#playing").html("C minor " + scale + ending + "<br> C - D sharp - G");
         play_notes();
     } else if (e.key == "D") { // D:Maj
         chord_1 = "#D" + scale;
@@ -405,6 +476,7 @@ $(document).on("keypress", function (e) {
         sound_1 = D_note[scale - 1];
         sound_2 = F_sharp[scale - 1];
         sound_3 = A_note[scale - 1];
+        $("#playing").html("D Major " + scale + ending + "<br> D - F sharp - A");
         play_notes();
     } else if (e.key == "d") { // D:min
         chord_1 = "#D" + scale;
@@ -413,6 +485,7 @@ $(document).on("keypress", function (e) {
         sound_1 = D_note[scale - 1];
         sound_2 = F_note[scale - 1];
         sound_3 = A_note[scale - 1];
+        $("#playing").html("D minor " + scale + ending + "<br> D - F - A");
         play_notes();
     } else if (e.key == "E") { // E:Maj
         chord_1 = "#E" + scale;
@@ -421,6 +494,7 @@ $(document).on("keypress", function (e) {
         sound_1 = E_note[scale - 1];
         sound_2 = G_sharp[scale - 1];
         sound_3 = B_note[scale - 1];
+        $("#playing").html("E Major " + scale + ending + "<br> E - G sharp - B");
         play_notes();
     } else if (e.key == "e") { // E:Min
         chord_1 = "#E" + scale;
@@ -429,6 +503,7 @@ $(document).on("keypress", function (e) {
         sound_1 = E_note[scale - 1];
         sound_2 = G_note[scale - 1];
         sound_3 = B_note[scale - 1];
+        $("#playing").html("E minor " + scale + ending + "<br> E - G - B");
         play_notes();
     } else if (e.key == "F") { // F:Maj
         chord_1 = "#F" + scale;
@@ -437,6 +512,7 @@ $(document).on("keypress", function (e) {
         sound_1 = F_note[scale - 1];
         sound_2 = A_note[scale - 1];
         sound_3 = C_note[scale - 1];
+        $("#playing").html("F Major " + scale + ending + "<br> F - A - C");
         play_notes();
     } else if (e.key == "f") { // F:Min
         chord_1 = "#F" + scale;
@@ -445,6 +521,7 @@ $(document).on("keypress", function (e) {
         sound_1 = F_note[scale - 1];
         sound_2 = G_sharp[scale - 1];
         sound_3 = C_note[scale - 1];
+        $("#playing").html("F minor " + scale + ending + "<br> F - G - C");
         play_notes();
     } else if (e.key == "G") { // G:Maj
         chord_1 = "#G" + scale;
@@ -453,6 +530,7 @@ $(document).on("keypress", function (e) {
         sound_1 = G_note[scale - 1];
         sound_2 = B_note[scale - 1];
         sound_3 = D_note[scale - 1];
+        $("#playing").html("G Major " + scale + ending + "<br> G - B - D");
         play_notes();
     } else if (e.key == "g") { // G:Min
         chord_1 = "#G" + scale;
@@ -461,51 +539,21 @@ $(document).on("keypress", function (e) {
         sound_1 = G_note[scale - 1];
         sound_2 = A_sharp[scale - 1];
         sound_3 = D_note[scale - 1];
+        $("#playing").html("G minor " + scale + ending + "<br> G - B sharp - D");
         play_notes();
-    } else if (e.key == ",") {
-        scale--;
-        if ($("#scale-1").is(":checked")) {
-            $("#scale-7").prop("checked", true);
-            scale = 7;
-        } else if ($("#scale-2").is(":checked")) {
-            $("#scale-1").prop("checked", true);
-        } else if ($("#scale-3").is(":checked")) {
-            $("#scale-2").prop("checked", true);
-        } else if ($("#scale-4").is(":checked")) {
-            $("#scale-3").prop("checked", true);
-        } else if ($("#scale-5").is(":checked")) {
-            $("#scale-4").prop("checked", true);
-        } else if ($("#scale-6").is(":checked")) {
-            $("#scale-5").prop("checked", true);
-        } else if ($("#scale-7").is(":checked")) {
-            $("#scale-6").prop("checked", true);
-        }
-    } else if (e.key == ".") {
-        scale++;
-        if ($("#scale-1").is(":checked")) {
-            $("#scale-2").prop("checked", true);
-        } else if ($("#scale-2").is(":checked")) {
-            $("#scale-3").prop("checked", true);
-        } else if ($("#scale-3").is(":checked")) {
-            $("#scale-4").prop("checked", true);
-        } else if ($("#scale-4").is(":checked")) {
-            $("#scale-5").prop("checked", true);
-        } else if ($("#scale-5").is(":checked")) {
-            $("#scale-6").prop("checked", true);
-        } else if ($("#scale-6").is(":checked")) {
-            $("#scale-7").prop("checked", true);
-        } else if ($("#scale-7").is(":checked")) {
-            $("#scale-1").prop("checked", true);
-            scale = 1;
-        }
     }
 });
 
+$("#scale-1-label").on("click", function () { $("#scale-1").prop("checked", true); scale = 1; });
+$("#scale-2-label").on("click", function () { $("#scale-2").prop("checked", true); scale = 2; });
+$("#scale-3-label").on("click", function () { $("#scale-3").prop("checked", true); scale = 3; });
+$("#scale-4-label").on("click", function () { $("#scale-4").prop("checked", true); scale = 4; });
+$("#scale-5-label").on("click", function () { $("#scale-5").prop("checked", true); scale = 5; });
+$("#scale-6-label").on("click", function () { $("#scale-6").prop("checked", true); scale = 6; });
+$("#scale-7-label").on("click", function () { $("#scale-7").prop("checked", true); scale = 7; });
+
 function play_notes() {
     playNote(sound_1, chord_1, "keypress");
-    $(chord_1).addClass("active");
     playNote(sound_2, chord_2, "keypress");
-    $(chord_2).addClass("active");
     playNote(sound_3, chord_3, "keypress");
-    $(chord_3).addClass("active");
 }
