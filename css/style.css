@@ -3,9 +3,12 @@
 }
 
 body {
-    min-height: 100%;
+    min-height: 100vh;
+    min-width: 600px;
     font-family: arial, sans-serif;
     background-color: rgb(129, 159, 159);
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -17,8 +20,18 @@ h2 {
     text-align: center;
 }
 
+.h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+}
+
 h3 {
     font-size: 30px;
+}
+
+.main-content {
+    min-height: 1000px;
 }
 
 .keyboard {
@@ -90,11 +103,19 @@ h3 {
 .notes-grid {
     margin: auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     max-width: 80%;
     padding: 60px;
     column-gap: 30px;
     font-size: 22px;
+}
+
+.chord-list {
+    grid-row: 1;
+}
+
+.current-key {
+    grid-row: 1;
 }
 
 .playing {
@@ -103,16 +124,26 @@ h3 {
 }
 
 footer {
-    position: fixed;
+    height: 77px;
+    width: -webkit-fill-available;
+    width: -moz-aviavle;
     background-color: #000000;
     color: #ddd;
-    width: 100%;
-    bottom: 0;
-    left: 0;
 }
 
 footer p {
-    padding-left: 30px;
+    margin: 0;
+    padding: 20px;
+}
+
+footer a {
+    color: #ffffff;
+    text-decoration-color: rgb(25, 137, 94);
+}
+
+footer a:hover {
+    background-color: rgb(25, 137, 94);
+    text-decoration-color: #ffffff;
 }
 
 /******* More info hover ******/
@@ -120,9 +151,13 @@ footer p {
 .dropdown-content {
     display: none;
     position: absolute;
+    max-width: 300px;
     background-color: #f9f9f9;
     min-width: 170px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    text-align: left;
+    font-weight: normal;
 }
 
 .dropdown-content a {
@@ -144,8 +179,14 @@ footer p {
     vertical-align: bottom;
 }
 
+.material-symbols-outlined.more-info.small {
+    font-size: 25px;
+}
+
 .material-symbols-outlined.more-info:hover {
+    display: inline-block;
     color: #ffcf01;
+    cursor: default;
 }
 
 .dropdown.more-info {
@@ -159,4 +200,21 @@ footer p {
 
 .inline {
     display: inline-block;
+}
+
+.center {
+    text-align: center;
+}
+
+@media screen and (max-width: 1135px) {
+    .notes-grid {
+        margin: auto;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .chord-list {
+        grid-row: 2;
+    }
 }
